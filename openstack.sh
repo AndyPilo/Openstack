@@ -80,8 +80,14 @@ function instalarSnap(){
         if [ "$pregunta2" == "S" ] 
         then
 	        echo "Instalando Snap en su sistema operativo ..."
-            sudo apt install snapd
+            output=$(sudo apt install snapd)
             repetir2=0
+            if [[ "$output" == *"Fallo"* || "$output" == *"Error"* ]]
+            then
+                echo ""
+                echo "Ha ocurrido un error, Intentelo de nuevo"
+                instalarSnap
+            fi
         elif [ "$pregunta2" == "N" ]
         then
             echo "Instalaciòn de Snap omitida"
