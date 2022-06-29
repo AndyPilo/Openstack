@@ -3,25 +3,26 @@
 #########################################     FUNCION actualizarSistema    ################################################
 function actualizarSistema(){
 
-    echo "Es necesario tener instalado Git en el sistema operativo"
+    echo "A continuacion se procedera a actualizar los paquetes del sistema operativo"
+    echo ""
     
-    local repetir1=1
+    local repetir0=1
 
-    while [ $repetir1 -eq 1 ]
+    while [ $repetir0 -eq 1 ]
     do
-        echo "¿Desea instalar Git?"
-        echo "S-Si(Recomendado)         N-No"
+        echo "¿Desea Continuar?"
+        echo "S-Si         N-No"
         read -r pregunta1
 
         if [ "$pregunta1" == "S" ] 
         then
 	        echo "Instalando Git en su sistema operativo ..."
-            sudo apt-get install git
-            repetir1=0
+            output=$(sudo apt-get update)
+            echo "$output"
+            repetir0=0
         elif [ "$pregunta1" == "N" ]
         then
-            echo "Instalaciòn de Git omitida"
-            repetir1=0
+            repetir0=0
         else 
             echo "Opciòn no vàlida"
             echo ""
@@ -129,13 +130,14 @@ function instalarMicrostack(){
 function microstackInit(){
 
     echo "A continuacion se procedera a inicializar Microstack en su nodo controlador"
-    echo "¿Desea continuar?"
-    echo "S-Si        N-No"
-    read -r pregunta4 
+     
     valorRetorno2=1
     repetir4=1
     while [ $repetir4 == 1 ] 
     do
+        echo "¿Desea continuar?"
+        echo "S-Si        N-No"
+        read -r pregunta4
 
         if [ "$pregunta4" == "S" ] 
         then
@@ -159,20 +161,22 @@ function microstackInit(){
 function agregarNodo(){
 
     echo "A continuacion se procedera a agregar un nodo computo a Openstack"
-    echo "¿Desea continuar?"
-    echo "S-Si         N-No"  
-    read -r pregunta5 
+    
     repetir5=1
     while [ $repetir5 == 1 ] 
     do
+        echo "¿Desea continuar?"
+        echo "S-Si         N-No"  
+        read -r pregunta5
 
         if [ "$pregunta5" == "S" ] 
         then
             echo "Generando clave de conexion..."
+            sudo microstack add-compute
             repetir5=0
         elif [ "$pregunta5" == "N" ]
         then
-            echo "No ha inicializado Microstack por lo tanto no podra utilizar Openstack"
+            echo "Proceso de agregar computo cancelado"
             repetir5=0
             valorRetorno2=0
         else
@@ -182,33 +186,42 @@ function agregarNodo(){
 }
 
 #################################################     P R I N C I P A L    ################################################
-echo "1-)Actualizaciòn de los paquetes del sistema operativo"
+echo "INSTALACIÓN DE OPENSTACK AUTOMATIZADA:"
+echo ""
+
+echo "Paso#1 - Actualizaciòn de los paquetes del sistema operativo"
+echo ""
 #FUNCION actualizarSistema
 actualizarSistema
+#clear
 
 #Instalacion de Git
-echo "2-)Instalaciòn de GIT"
+echo "Paso#2 - Instalaciòn de GIT"
 instalarGit 
-echo ""
+clear
 
 #Instalacion de Snap
-echo "3-)Instalaciòn de Snap"
+echo "Paso#3 - Instalaciòn de Snap"
 instalarSnap 
-echo ""
+clear
 
 #Instalacion de microstack
-echo "4-)Instalacion de Microstack"
+echo "Paso#4 - Instalacion de Microstack"
 instalarMicrostack 
-echo ""
+clear
 
 if [ "$valorRetorno" == 1 ] 
 then
     #Inicializar MicroStack
-    echo"5-)Inicializacion del nodo control de Openstack"
+    echo "Paso#5 - Inicializacion del nodo control de Openstack"
     microstackInit
-    echo ""
+    clear
     if [ "$valorRetorno2" == 1 ] 
     then
-        echo "6-)Añadir nueva computadora como nodo a la nube"
+        echo "Paso#6 - Añadir nueva computadora como nodo a la nube"
+        agregarNodo
     fi
 fi
+clear
+echo "Instalación exitosa"
+    
