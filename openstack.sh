@@ -16,8 +16,9 @@ function actualizarSistema(){
 
         if [ "$pregunta1" == "S" ] 
         then
-	        echo "Instalando Git en su sistema operativo ..."
+	        echo "Actualizando sistema operativo ..."
             output=$(sudo apt-get update)
+            sudo apt-get update
             echo "$output"
             repetir0=0
         elif [ "$pregunta1" == "N" ]
@@ -193,7 +194,7 @@ echo "Paso#1 - Actualizaciòn de los paquetes del sistema operativo"
 echo ""
 #FUNCION actualizarSistema
 actualizarSistema
-#clear
+clear
 
 #Instalacion de Git
 echo "Paso#2 - Instalaciòn de GIT"
