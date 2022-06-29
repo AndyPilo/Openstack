@@ -194,35 +194,35 @@ echo "Paso#1 - Actualizaciòn de los paquetes del sistema operativo"
 echo ""
 #FUNCION actualizarSistema
 actualizarSistema
-clear
+#clear
 
 #Instalacion de Git
 echo "Paso#2 - Instalaciòn de GIT"
 instalarGit 
-clear
+#clear
 
 #Instalacion de Snap
 echo "Paso#3 - Instalaciòn de Snap"
 instalarSnap 
-clear
+#clear
 
 #Instalacion de microstack
 echo "Paso#4 - Instalacion de Microstack"
 instalarMicrostack 
-clear
+#clear
 
 if [ "$valorRetorno" == 1 ] 
 then
     #Inicializar MicroStack
     echo "Paso#5 - Inicializacion del nodo control de Openstack"
     microstackInit
-    clear
+    #clear
     if [ "$valorRetorno2" == 1 ] 
     then
         echo "Paso#6 - Añadir nueva computadora como nodo a la nube"
         agregarNodo
     fi
 fi
-clear
+#clear
 echo "Instalación exitosa"
     
