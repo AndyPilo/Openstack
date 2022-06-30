@@ -19,13 +19,14 @@ function actualizarSistema(){
         then
 	        echo "Actualizando sistema operativo ..."
             output1=$(sudo apt-get update)
+            repetir0=0
+            printf '%s\n' "$output1"
             if [[ "$output1" == *"Fallo"* || "$output1" == *"Error"* ]]
             then
                 echo ""
                 echo "Ha ocurrido un error, Intentelo de nuevo"
                 actualizarSistema
             fi
-            repetir0=0
         elif [ "$pregunta1" == "N" ]
         then
             repetir0=0
@@ -55,13 +56,14 @@ function instalarGit(){
         then
 	        echo "Instalando Git en su sistema operativo ..."
             output2=$(sudo apt-get install git)
+            repetir1=0
+            printf '%s\n' "$output2"
             if [[ "$output2" == "Fallo" || "$output2" == "Error" ]]
             then
                 echo ""
                 echo "Ha ocurrido un error, Intentelo de nuevo"
                 instalarGit
             fi
-            repetir1=0
         elif [ "$pregunta1" == "N" ]
         then
             echo "Instalaciòn de Git omitida"
@@ -92,6 +94,7 @@ function instalarSnap(){
 	        echo "Instalando Snap en su sistema operativo ..."
             output3=$(sudo apt install snapd)
             repetir2=0
+            printf '%s\n' "$output3"
             if [[ "$output3" == *"Fallo"* || "$output3" == *"Error"* ]]
             then
                 echo ""
@@ -130,6 +133,7 @@ function instalarMicrostack(){
 	        echo "Instalando Microstack en su sistema operativo ..."
             output4=$(sudo snap install microstack --beta)
             repetir3=0
+            printf '%s\n' "$output4"
             if [[ "$output4" == "Fallo" || "$output4" == "Error" ]]
             then
                 echo ""
@@ -167,6 +171,7 @@ function microstackInit(){
             echo "Inicializando Microstack ..."
             output5=$(sudo microstack init --auto --control)
             repetir4=0
+            printf '%s\n' "$output5"
             if [[ "$output5" == "Fallo" || "$output5" == "Error" ]]
             then
                 echo ""
@@ -203,6 +208,7 @@ function agregarNodo(){
             echo "Generando clave de conexion..."
             output6=$(sudo microstack add-compute)
             repetir5=0
+            printf '%s\n' "$output6"
              if [[ "$output6" == "Fallo" || "$output6" == "Error" ]]
             then
                 echo ""
