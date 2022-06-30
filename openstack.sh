@@ -11,22 +11,26 @@ function actualizarSistema(){
     while [ $repetir0 -eq 1 ]
     do
         echo "¿Desea Continuar?"
-        echo "S-Si         N-No"
+        echo "S-Actualizar         N-Omitir"
+        echo ""
         read -r pregunta1
 
         if [ "$pregunta1" == "S" ] 
         then
 	        echo "Actualizando sistema operativo ..."
-            output=$(sudo apt-get update)
-            sudo apt-get update
-            echo "$output"
+            output1=$(sudo apt-get update)
+            if [[ "$output1" == *"Fallo"* || "$output1" == *"Error"* ]]
+            then
+                echo ""
+                echo "Ha ocurrido un error, Intentelo de nuevo"
+                actualizarSistema
+            fi
             repetir0=0
         elif [ "$pregunta1" == "N" ]
         then
             repetir0=0
         else 
             echo "Opciòn no vàlida"
-            echo ""
             echo ""
         fi  
     done        
@@ -50,7 +54,13 @@ function instalarGit(){
         if [ "$pregunta1" == "S" ] 
         then
 	        echo "Instalando Git en su sistema operativo ..."
-            sudo apt-get install git
+            output2=$(sudo apt-get install git)
+            if [[ "$output2" == "Fallo" || "$output2" == "Error" ]]
+            then
+                echo ""
+                echo "Ha ocurrido un error, Intentelo de nuevo"
+                instalarGit
+            fi
             repetir1=0
         elif [ "$pregunta1" == "N" ]
         then
@@ -80,9 +90,9 @@ function instalarSnap(){
         if [ "$pregunta2" == "S" ] 
         then
 	        echo "Instalando Snap en su sistema operativo ..."
-            output=$(sudo apt install snapd)
+            output3=$(sudo apt install snapd)
             repetir2=0
-            if [[ "$output" == *"Fallo"* || "$output" == *"Error"* ]]
+            if [[ "$output3" == *"Fallo"* || "$output3" == *"Error"* ]]
             then
                 echo ""
                 echo "Ha ocurrido un error, Intentelo de nuevo"
@@ -118,8 +128,14 @@ function instalarMicrostack(){
         if [ "$pregunta3" == "S" ] 
         then
 	        echo "Instalando Microstack en su sistema operativo ..."
-            sudo snap install microstack --beta
+            output4=$(sudo snap install microstack --beta)
             repetir3=0
+            if [[ "$output4" == "Fallo" || "$output4" == "Error" ]]
+            then
+                echo ""
+                echo "Ha ocurrido un error, Intentelo de nuevo"
+                instalarMicrostack
+            fi
         elif [ "$pregunta3" == "N" ]
         then
             echo "Instalaciòn de OpenStack cancelada"
@@ -149,8 +165,14 @@ function microstackInit(){
         if [ "$pregunta4" == "S" ] 
         then
             echo "Inicializando Microstack ..."
-            sudo microstack init --auto --control
+            output5=$(sudo microstack init --auto --control)
             repetir4=0
+            if [[ "$output5" == "Fallo" || "$output5" == "Error" ]]
+            then
+                echo ""
+                echo "Ha ocurrido un error, Intentelo de nuevo"
+                microstackInit
+            fi
         elif [ "$pregunta4" == "N" ]
         then
             echo "No ha inicializado Microstack por lo tanto no podra utilizar Openstack"
@@ -179,8 +201,14 @@ function agregarNodo(){
         if [ "$pregunta5" == "S" ] 
         then
             echo "Generando clave de conexion..."
-            sudo microstack add-compute
+            output6=$(sudo microstack add-compute)
             repetir5=0
+             if [[ "$output6" == "Fallo" || "$output6" == "Error" ]]
+            then
+                echo ""
+                echo "Ha ocurrido un error, Intentelo de nuevo"
+                agregarNodo
+            fi
         elif [ "$pregunta5" == "N" ]
         then
             echo "Proceso de agregar computo cancelado"
@@ -200,21 +228,25 @@ echo "Paso#1 - Actualizaciòn de los paquetes del sistema operativo"
 echo ""
 #FUNCION actualizarSistema
 actualizarSistema
+echo ""
 #clear
 
 #Instalacion de Git
 echo "Paso#2 - Instalaciòn de GIT"
-instalarGit 
+instalarGit
+echo "" 
 #clear
 
 #Instalacion de Snap
 echo "Paso#3 - Instalaciòn de Snap"
-instalarSnap 
+instalarSnap
+echo "" 
 #clear
 
 #Instalacion de microstack
 echo "Paso#4 - Instalacion de Microstack"
-instalarMicrostack 
+instalarMicrostack
+echo "" 
 #clear
 
 if [ "$valorRetorno" == 1 ] 
@@ -222,13 +254,16 @@ then
     #Inicializar MicroStack
     echo "Paso#5 - Inicializacion del nodo control de Openstack"
     microstackInit
+    echo ""
     #clear
     if [ "$valorRetorno2" == 1 ] 
     then
         echo "Paso#6 - Añadir nueva computadora como nodo a la nube"
         agregarNodo
+        echo ""
+        #clear
     fi
 fi
-#clear
+
 echo "Instalación exitosa"
     
