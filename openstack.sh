@@ -10,7 +10,7 @@ function actualizarSistema(){
 
     while [ $repetir0 -eq 1 ]
     do
-        echo "¿Desea Continuar?"
+        echo "¿Desea Continuarcon la instalacion?"
         echo "S-Actualizar         N-Omitir"
         echo ""
         read -r pregunta1
@@ -21,6 +21,7 @@ function actualizarSistema(){
             output1=$(sudo apt-get update)
             repetir0=0
             printf '%s\n' "$output1"
+            echo "$output1"
             if [[ "$output1" == *"Fallo"* || "$output1" == *"Error"* ]]
             then
                 echo ""
@@ -56,6 +57,7 @@ function instalarGit(){
         then
 	        echo "Instalando Git en su sistema operativo ..."
             output2=$(sudo apt-get install git)
+            echo "$output2"
             repetir1=0
             printf '%s\n' "$output2"
             if [[ "$output2" == "Fallo" || "$output2" == "Error" ]]
@@ -95,7 +97,8 @@ function instalarSnap(){
             output3=$(sudo apt install snapd)
             repetir2=0
             printf '%s\n' "$output3"
-            if [[ "$output3" == *"Fallo"* || "$output3" == *"Error"* ]]
+            echo "$output3"
+            if [[ "$output3" == *"Fallo"* || "$output3" == *"Error"* || "$output3" == *"WARNING"* ]]
             then
                 echo ""
                 echo "Ha ocurrido un error, Intentelo de nuevo"
@@ -133,6 +136,7 @@ function instalarMicrostack(){
 	        echo "Instalando Microstack en su sistema operativo ..."
             output4=$(sudo snap install microstack --beta)
             repetir3=0
+            echo "$output4"
             printf '%s\n' "$output4"
             if [[ "$output4" == "Fallo" || "$output4" == "Error" ]]
             then
@@ -171,6 +175,7 @@ function microstackInit(){
             echo "Inicializando Microstack ..."
             output5=$(sudo microstack init --auto --control)
             repetir4=0
+            echo "$output5"
             printf '%s\n' "$output5"
             if [[ "$output5" == "Fallo" || "$output5" == "Error" ]]
             then
