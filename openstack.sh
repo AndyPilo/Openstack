@@ -10,7 +10,7 @@ function actualizarSistema(){
 
     while [ $repetir0 -eq 1 ]
     do
-        echo "¿Desea Continuarcon la instalacion?"
+        echo "¿Desea Continuar con la instalacion?"
         echo "S-Actualizar         N-Omitir"
         echo ""
         read -r pregunta1
@@ -92,7 +92,7 @@ function instalarSnap(){
         if [ "$pregunta2" == "S" ] 
         then
 	        echo "Instalando Snap en su sistema operativo ..."
-            output3=$(sudo apt install snapd)
+            output3=$(sudo apt-get install snapd)
             repetir2=0
             printf '%s\n' "$output3"
             if [[ "$output3" == *"Fallo"* || "$output3" == *"Error"* || "$output3" == *"apt"* ]]
