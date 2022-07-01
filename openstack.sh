@@ -175,7 +175,7 @@ function instalarMicrostack(){
     done        
 }
 
-############################################   FUNCION microstackInit    ################################################
+#######################################   FUNCION microstackInitControl    ################################################
 function microstackInitControl(){
 
     valorRetorno2=1
@@ -220,7 +220,7 @@ function microstackInitControl(){
     done
 }
 
-############################################   FUNCION microstackInit    ################################################
+#######################################  FUNCION microstackInitCompute    ################################################
 function microstackInitCompute(){
      
     valorRetorno2=1
@@ -235,8 +235,9 @@ function microstackInitCompute(){
         if [ "$pregunta6" == "S" ] 
         then
             echo ""
-            echo "Inicializando Microstack como compute..."
-            output5=$(sudo microstack init --auto --compute --join)
+            echo "Ingrese su clave de conexión: "
+            read -r clave
+            output5=$(sudo microstack init --auto --compute --join "$clave")
             repetir6=0
             printf '%s\n' "$output5"
             if [[ "$output5" == "Fallo" || "$output5" == "Error" ]]
