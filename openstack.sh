@@ -2,14 +2,13 @@
 
 #########################################     FUNCION actualizarSistema    ################################################
 function actualizarSistema(){
-
-    echo "A continuacion se procedera a actualizar los paquetes del sistema operativo"
     
     local repetir0=1
 
     while [ $repetir0 -eq 1 ]
     do
-        echo "¿Desea Continuar con la instalacion?"
+        echo "A continuacion se procedera a actualizar los paquetes del sistema operativo"
+        echo "¿Desea Continuar con la actualización?"
         echo "S-Actualizar         N-Omitir"
         echo ""
         read -r pregunta1
@@ -32,7 +31,8 @@ function actualizarSistema(){
         then
             repetir0=0
         else 
-            echo "Opciòn no vàlida"
+            clear
+            echo "La opción que seleccionó no era válida, Intentelo de nuevo"
             echo ""
             echo ""
         fi  
@@ -43,13 +43,12 @@ function actualizarSistema(){
 #########################################     FUNCION InstalarGit    ################################################
 
 function instalarGit(){
-
-    echo "Es necesario tener instalado Git en el sistema operativo"
     
     local repetir1=1
 
     while [ $repetir1 -eq 1 ]
     do
+        echo "Es necesario tener instalado Git en el sistema operativo"
         echo "¿Desea instalar Git?"
         echo "S-Si(Recomendado)         N-No"
         read -r pregunta1
@@ -76,7 +75,8 @@ function instalarGit(){
             echo "Instalaciòn de Git omitida"
             repetir1=0
         else 
-            echo "Opciòn no vàlida"
+            clear
+            echo "La opción que seleccionó no era válida, Intentelo de nuevo"
             echo ""
             echo ""
         fi  
@@ -86,12 +86,11 @@ function instalarGit(){
 ############################################   FUNCION instalarSnap    ################################################
 function instalarSnap(){
 
-    echo "Es necesario tener instalado snap en el sistema operativo"
-    
     local repetir2=1
 
     while [ $repetir2 -eq 1 ]
     do
+        echo "Es necesario tener instalado snap en el sistema operativo"
         echo "¿Desea instalar Snap?"
         echo "S-Si(Recomendado)         N-No"
         read -r pregunta2
@@ -118,7 +117,8 @@ function instalarSnap(){
             echo "Instalaciòn de Snap omitida"
             repetir2=0
         else 
-            echo "Opciòn no vàlida"
+            clear
+            echo "La opción que seleccionó no era válida, Intentelo de nuevo"
             echo ""
             echo ""
         fi  
@@ -129,13 +129,14 @@ function instalarSnap(){
 ############################################   FUNCION instalarMicrostack    ################################################
 function instalarMicrostack(){
 
-    echo "Se procedera a instalar Microstack"
+    
     
     local repetir3=1
     valorRetorno=1
 
     while [ $repetir3 -eq 1 ]
     do
+        echo "Se procedera a instalar Microstack"
         echo "¿Desea Instalar?"
         echo "S-Si         N-No"
         read -r pregunta3
@@ -166,7 +167,8 @@ function instalarMicrostack(){
             valorRetorno=0
             valorFinal=0
         else 
-            echo "Opciòn no vàlida"
+            clear
+            echo "La opción que seleccionó no era válida, Intentelo de nuevo"
             echo ""
             echo ""
         fi  
@@ -174,15 +176,14 @@ function instalarMicrostack(){
 }
 
 ############################################   FUNCION microstackInit    ################################################
-function microstackInit(){
+function microstackInitControl(){
 
-    echo "A continuacion se procedera a inicializar Microstack en su nodo controlador"
-     
     valorRetorno2=1
     repetir4=1
     while [ $repetir4 == 1 ] 
     do
-        echo "¿Desea Instalar?"
+        echo "A continuacion se procedera a inicializar Microstack en su nodo controlador"
+        echo "¿Desea Inicializar?"
         echo "S-Si        N-No"
         read -r pregunta4
 
@@ -211,18 +212,64 @@ function microstackInit(){
             valorRetorno2=0
             valorFinal=1
         else
-            echo "Opciòn no vàlida"
+            clear
+            echo "La opción que seleccionó no era válida, Intentelo de nuevo"
             echo ""
             echo ""
         fi
     done
+}
 
+############################################   FUNCION microstackInit    ################################################
+function microstackInitCompute(){
+     
+    valorRetorno2=1
+    repetir6=1
+    while [ $repetir6 == 1 ] 
+    do
+        echo "A continuacion se procedera a inicializar Microstack en su nodo controlador"
+        echo "¿Desea Inicializar?"
+        echo "S-Si        N-No"
+        read -r pregunta6
 
+        if [ "$pregunta6" == "S" ] 
+        then
+            echo ""
+            echo "Inicializando Microstack como compute..."
+            output5=$(sudo microstack init --auto --compute --join)
+            repetir6=0
+            printf '%s\n' "$output5"
+            if [[ "$output5" == "Fallo" || "$output5" == "Error" ]]
+            then
+                echo ""
+                echo "Ha ocurrido un error, Intentelo de nuevo"
+                repetir6=1
+            else
+                echo ""
+                echo "Microstack instalado como nodo compute"
+            fi
+            valorFinal=2
+        elif [ "$pregunta6" == "N" ]
+        then
+            echo ""
+            echo "No ha inicializado Microstack como nodo compute"
+            repetir6=0
+            valorFinal=1
+        else
+            clear
+            echo "La opción que seleccionó no era válida, Intentelo de nuevo"
+            echo ""
+            echo ""
+        fi
+    done
 }
 
 ############################################   FUNCION agregarNodo    ################################################
 function agregarNodo(){
-
+    echo ""
+    echo "Presione enter para continuar ..."
+    read -r
+    clear 
     echo "A continuacion se procedera a agregar un nodo computo a Openstack"
     
     repetir5=1
@@ -251,7 +298,8 @@ function agregarNodo(){
             echo "Proceso de agregar computo cancelado"
             repetir5=0
         else
-            echo "Opciòn no vàlida"
+            clear
+            echo "La opción que seleccionó no era válida, Intentelo de nuevo"
             echo ""
             echo ""
         fi
@@ -260,59 +308,108 @@ function agregarNodo(){
 
 #################################################     P R I N C I P A L    ################################################
 echo "                          *******************************************"
-echo "*                         *  INSTALACIÓN DE OPENSTACK AUTOMATIZADA  *"
+echo "                          *  INSTALACIÓN DE OPENSTACK AUTOMATIZADA  *"
 echo "                          *******************************************"
 echo ""
+cicloPrincipal=1
+while [ $cicloPrincipal == 1 ]
+do 
+echo "Seleccione la opción que desee: "
+echo "1 - Instalar Openstack como nodo controlador"
+echo "2 - Instalar Openstack como nodo computo"
+read -r opcion
+clear
 
+if [[ "$opcion" == 1 || "$opcion" == 2 ]]
+then
+cicloPrincipal=0
 echo "Paso#1 - Actualizaciòn de los paquetes del sistema operativo"
+echo ""
 #FUNCION actualizarSistema
 actualizarSistema
 echo ""
-#clear
 
 #Instalacion de Git
+echo "Presione enter para continuar ..."
+read -r
+clear 
 echo "Paso#2 - Instalaciòn de GIT"
+echo ""
 instalarGit
 echo "" 
-#clear
 
 #Instalacion de Snap
+echo "Presione enter para continuar ..."
+read -r
+clear 
 echo "Paso#3 - Instalaciòn de Snap"
+echo ""
 instalarSnap
 echo "" 
-#clear
 
-#Instalacion de microstack
+#Instalacion de microstack nodo control
+echo "Presione enter para continuar ..."
+read -r
+clear 
 echo "Paso#4 - Instalacion de Microstack"
+echo ""
 instalarMicrostack
 echo "" 
-#clear
-
-if [ "$valorRetorno" == 1 ] 
-then
-    #Inicializar MicroStack
-    echo "Paso#5 - Inicializacion del nodo control de Openstack"
-    microstackInit
-    echo ""
-    #clear
-    if [ "$valorRetorno2" == 1 ] 
+if [ "$opcion" == 1 ]
     then
-        echo "Paso#6 - Añadir nueva computadora como nodo a la nube"
-        agregarNodo
-        echo ""
-        #clear
+        if [ "$valorRetorno" == 1 ] 
+        then
+            #Inicializar MicroStack nodo control
+            echo "Presione enter para continuar ..."
+            read -r
+            clear 
+            echo "Paso#5 - Inicializacion del nodo control de Openstack"
+            echo ""
+            microstackInitControl
+            echo ""        
+        fi
+        if [ "$valorFinal" == 2 ]
+        then
+            if [ "$valorRetorno2" == 1 ] 
+            then
+                agregarNodo     
+                echo ""   
+                echo "Instalación exitosa"
+            fi
+        elif [ "$valorFinal" == 1 ]
+        then
+            echo "Microstack instalado, falta inicializarlo"
+            echo "FIN DE LA INSTALACION"
+        else
+            echo "FIN DE LA INSTALACION"
+        fi
+    elif [ "$opcion" == 2 ]
+    then 
+        if [ "$valorRetorno" == 1 ] 
+        then
+            #Inicializar MicroStack nodo control
+            echo "Presione enter para continuar ..."
+            read -r
+            clear 
+            echo ""
+            echo "Paso#5 - Inicializacion del nodo control de Openstack"
+            microstackInitCompute
+            echo ""
+        fi
+        if [ "$valorFinal" == 2 ]
+        then
+        echo "Instalación exitosa"
+        echo "FIN DE LA INSTALACION"
+        elif [ "$valorFinal" == 1 ]
+        then
+            echo "Microstack instalado, falta inicializarlo"
+            echo "FIN DE LA INSTALACION"
+        fi
     fi
-fi
-if [ "$valorFinal" == 2 ]
-then
-    echo "Instalación exitosa"
-    echo "FIN DE LA INSTALACION"
-elif [ "$valorFinal" == 1 ]
-then
-    echo "Microstack instalado, falta inicializarlo"
-    echo "FIN DE LA INSTALACION"
 else
-    echo "FIN DE LA INSTALACION"
+    echo "La opción que seleccionó no era válida, Intentelo de nuevo"
+    echo ""
+    echo ""
 fi
-
+done
     
